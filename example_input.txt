@@ -1,0 +1,6 @@
+#S
+#I
+#R
+#T
+#beta
+#gamma

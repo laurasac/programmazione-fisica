@@ -1,12 +1,13 @@
-#include "sir.hpp"
-#include <array>
-int main(){
-    float gamma{0.};
-    float beta{0.};
-    // prendere in input le cose, possiamo farlo o direttamente qui o definiamo funzioni esterne
+#include "input_ouput.hpp"
+#include "epidemic.hpp"
+#include <stdexcept>
 
-    const size_t T;
-    std::array<sir::SIR, T> ; // direi di utilizzre un arrayb che tanto fin da subito sappiamo la lunghezza della simulazione
-
-
-} // possiamo passare i dati anche da riga di comando, quindi dobbiamo anche impostare qui ni parametri
+int main(int argc, char *argv[]) {
+    try{
+      sir::Epidemic epidemic;
+      sir::input(argc, argv, epidemic);
+      sir::outputTable(epidemic);
+    } catch(std::invalid_argument& e){
+      throw e;
+    }
+}
