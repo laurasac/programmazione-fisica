@@ -15,7 +15,7 @@ struct SIR {
 int update_s(SIR old_sir, float beta, int N);
 int update_i(SIR old_sir, float beta, float gamma, int N);
 int update_r(SIR old_sir, float gamma, int N);
-int control_sir(SIR old_sir, float gamma,
+int control_sir(SIR old_sir,
                 int N);  // potremmo anche fare tutte queste cose in unica
                          // funzione in realtà
 void print_sir();        // per stampare i dati
