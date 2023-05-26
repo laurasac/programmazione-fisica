@@ -3,6 +3,11 @@ project(sir VERSION 0.1.0)
 
 # abilita il supporto per i test, tra cui l'opzione BUILD_TESTING usata sotto
 include(CTest)
+find_package(SFML 2.5 
+  COMPONENTS 
+    system window graphics network audio REQUIRED
+  )
+#importante
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -18,8 +23,18 @@ string(APPEND CMAKE_CXX_FLAGS " -Wall -Wextra")
 string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address,undefined -fno-omit-frame-pointer")
 string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-omit-frame-pointer")
 
-add_executable(sir main.cpp sir.cpp epidemic.cpp input_output.cpp)
+add_executable(sir sfml.cpp sir.cpp)
+#add_executable(sir main.cpp sir.cpp epidemic.cpp io.cpp)
+target_link_libraries(sir PRIVATE sfml-graphics) #importante
 
 # se il testing e' abilitato...
 #   per disabilitare il testing, passare -DBUILD_TESTING=OFF a cmake durante la fase di configurazione
 
+if (BUILD_TESTING)
+
+  # aggiungi l'eseguibile statistics.t
+  add_executable(testing.t test.cpp sir.cpp epidemic.cpp io.cpp)
+  # aggiungi l'eseguibile statistics.t alla lista dei test
+  add_test(NAME testing.t COMMAND testing)
+
+endif()

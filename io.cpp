@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "epidemic.hpp"
-#include "input_ouput.hpp"
+#include "io.hpp"
 
 void sir::inputCin(sir::Epidemic& epidemic) {
   float gamma{0.};
