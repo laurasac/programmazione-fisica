@@ -23,6 +23,7 @@ class Epidemic {
   double getBeta() const;
   double getGamma() const;
   int getT() const;
+  int getN() const;
 };
 }  // namespace sir
 #endif

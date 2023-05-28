@@ -18,15 +18,21 @@ int sir::update_i(sir::SIR& old_sir, float beta, float gamma, int N) {
       std::round(old_sir.I + (beta * old_sir.S * old_sir.I / N) - (gamma * old_sir.I));
   return new_i;
 };
-int sir::update_r(sir::SIR& old_sir, float gamma) {
-  int new_r = std::round(old_sir.R + (gamma * old_sir.I));
-  return new_r;
+int sir::update_r(sir::SIR& old_sir, int new_s, int new_i, float gamma) {
+  int new_r_1 = old_sir.R + (gamma * old_sir.I);
+  int new_r_2 = std::round(old_sir.R + (gamma * old_sir.I));
+  int n = old_sir.S+ old_sir.I + old_sir.R;
+  if((new_r_1 + new_s + new_i ) == n){
+    return new_r_1;
+  } else {
+    return new_r_2;
+  }
 }
-bool sir::control_sir(sir::SIR& old_sir, int N) {
+bool sir::control_sir(sir::SIR& sir, int N) {
   /*if (!(old_sir.S + old_sir.I + old_sir.R == N)) {
     throw std::invalid_argument("C'è stato un errore nella simulazione");
   }*/
-   return (old_sir.S + old_sir.I + old_sir.R == N);
+   return (sir.S + sir.I + sir.R == N);
 }
 
 void sir::print_sir(sir::SIR& old_sir) {

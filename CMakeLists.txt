@@ -23,8 +23,8 @@ string(APPEND CMAKE_CXX_FLAGS " -Wall -Wextra")
 string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address,undefined -fno-omit-frame-pointer")
 string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-omit-frame-pointer")
 
-add_executable(sir sfml.cpp sir.cpp)
-#add_executable(sir main.cpp sir.cpp epidemic.cpp io.cpp)
+add_executable(sir main.cpp sir.cpp epidemic.cpp io.cpp graph.cpp)
+
 target_link_libraries(sir PRIVATE sfml-graphics) #importante
 
 # se il testing e' abilitato...
@@ -33,8 +33,8 @@ target_link_libraries(sir PRIVATE sfml-graphics) #importante
 if (BUILD_TESTING)
 
   # aggiungi l'eseguibile statistics.t
-  add_executable(testing.t test.cpp sir.cpp epidemic.cpp io.cpp)
+  #add_executable(testing.t test.cpp sir.cpp epidemic.cpp io.cpp)
   # aggiungi l'eseguibile statistics.t alla lista dei test
-  add_test(NAME testing.t COMMAND testing)
+  #add_test(NAME testing.t COMMAND testing)
 
 endif()

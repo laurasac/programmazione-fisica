@@ -85,7 +85,7 @@ void sir::outputTable(sir::Epidemic& epidemic) {
   std::cout << "  T  |  S  |  I  |  R  "
             << "\n";
   std::cout << "-----------------------\n";
-  for (int i = 0; i <= epidemic.getT(); i++) {
+  for (int i = 0; i < state.size(); i++) {
     std::cout << "  " << i << "  |  " << state[i].S << "  |"
               << "  " << state[i].I << "  |  " << state[i].R << "  "
               << "\n";
