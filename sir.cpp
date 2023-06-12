@@ -29,9 +29,7 @@ int sir::update_r(sir::SIR& old_sir, int new_s, int new_i, float gamma) {
   }
 }
 bool sir::control_sir(sir::SIR& sir, int N) {
-  /*if (!(old_sir.S + old_sir.I + old_sir.R == N)) {
-    throw std::invalid_argument("C'è stato un errore nella simulazione");
-  }*/
+
    return (sir.S + sir.I + sir.R == N);
 }
 

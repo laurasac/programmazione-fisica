@@ -32,9 +32,8 @@ target_link_libraries(sir PRIVATE sfml-graphics) #importante
 
 if (BUILD_TESTING)
 
-  # aggiungi l'eseguibile statistics.t
-  #add_executable(testing.t test.cpp sir.cpp epidemic.cpp io.cpp)
-  # aggiungi l'eseguibile statistics.t alla lista dei test
-  #add_test(NAME testing.t COMMAND testing)
+  
+ add_executable(test-sir test.cpp sir.cpp epidemic.cpp io.cpp )
+  add_test(NAME test_sir COMMAND test-sir)
 
 endif()

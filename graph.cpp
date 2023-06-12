@@ -141,7 +141,7 @@ void sir::create_graph(sf::RenderWindow& window, const int width,
   window.draw(label_i);
   window.draw(label_r);
 
-  sf::VertexArray chart_S_1(sf::PrimitiveType::LineStrip, T);
+  sf::VertexArray chart_S_1(sf::PrimitiveType::LineStrip, T); 
   sf::VertexArray chart_S_2(sf::PrimitiveType::LineStrip, T);
   sf::VertexArray chart_I_1(sf::PrimitiveType::LineStrip, T);
   sf::VertexArray chart_I_2(sf::PrimitiveType::LineStrip, T);

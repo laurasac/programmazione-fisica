@@ -45,7 +45,7 @@ int sir::Epidemic::getT() const { return T_; }
 int sir::Epidemic::getN() const { return N_; }
 
 void sir::Epidemic::evolve(){
-  for(int i=0; i<= T_; i++){
+  for(int i=0; i< T_; i++){
     sir::SIR new_sir{0, 0, 0};
     new_sir.S = sir::update_s(state_[i],  beta_,  N_);
     new_sir.I = sir::update_i(state_[i],  beta_,  gamma_,  N_);
