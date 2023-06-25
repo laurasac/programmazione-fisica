@@ -15,16 +15,19 @@ class Epidemic {
  public:
   Epidemic(sir::SIR firstState, double beta, double gamma, int T);
   Epidemic();
+  
   void setFirstState(sir::SIR firstState);
-  void setBetaGamma(double beta, double gamma);
+  void setBeta(double beta);
+  void setGamma(double gamma);
   void setT(int T);
-  void evolve();
+  
   std::vector<sir::SIR> getState() const;
   double getBeta() const;
   double getGamma() const;
   int getT() const;
   int getN() const;
+  
+  void evolve();
 };
 }  // namespace sir
 #endif
-// fai qui i controlli su gamma e beta quando

@@ -5,8 +5,10 @@ project(sir VERSION 0.1.0)
 include(CTest)
 find_package(SFML 2.5 
   COMPONENTS 
-    system window graphics network audio REQUIRED
+    window graphics  REQUIRED
   )
+
+
 #importante
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -23,17 +25,18 @@ string(APPEND CMAKE_CXX_FLAGS " -Wall -Wextra")
 string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address,undefined -fno-omit-frame-pointer")
 string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-omit-frame-pointer")
 
-add_executable(sir main.cpp sir.cpp epidemic.cpp io.cpp graph.cpp)
-
-target_link_libraries(sir PRIVATE sfml-graphics) #importante
+add_executable(sir main.cpp  src/sir.cpp src/epidemic.cpp src/automaton.cpp  src/io.cpp src/graph.cpp)
+# 
+target_include_directories(sir PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_link_libraries(sir PRIVATE sfml-graphics sfml-window) #importante
 
 # se il testing e' abilitato...
 #   per disabilitare il testing, passare -DBUILD_TESTING=OFF a cmake durante la fase di configurazione
 
 if (BUILD_TESTING)
-
   
- add_executable(test-sir test.cpp sir.cpp epidemic.cpp io.cpp )
+  add_executable(test-sir test.cpp src/sir.cpp src/epidemic.cpp src/automaton.cpp src/io.cpp )
+  target_include_directories(test-sir PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
   add_test(NAME test_sir COMMAND test-sir)
 
 endif()
