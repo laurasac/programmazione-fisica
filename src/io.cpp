@@ -1,4 +1,5 @@
 #include "io.hpp"
+
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
@@ -13,7 +14,7 @@ int sir::inputCin(sir::Epidemic& epidemic, sir::Automaton& automaton) {
   try {
     while (true) {
       if (mode == 1) {
-        double gamma;  
+        double gamma;
         double beta;
         sir::SIR state{0, 0, 0};
         int T;
@@ -62,7 +63,7 @@ int sir::inputCin(sir::Epidemic& epidemic, sir::Automaton& automaton) {
         std::cout << "\n"
                   << "gamma, probabilità di morte o guarigione: ";
         std::cin >> gamma;
-        
+
         automaton.setT(T);
         automaton.setN(N);
         automaton.setBeta(beta);
@@ -80,14 +81,16 @@ int sir::inputCin(sir::Epidemic& epidemic, sir::Automaton& automaton) {
   }
 }
 
-int  sir::inputFile(std::string filename, sir::Epidemic& epidemic,
-                    sir::Automaton& automaton) {
-
-  std::ifstream file{filename};
-  std::string row;
-  std::getline(file, row, '\n');
-  int mode{std::stoi(row)};
+int sir::inputFile(std::string filename, sir::Epidemic& epidemic,
+                   sir::Automaton& automaton) {
   try {
+    std::ifstream file{filename};
+    if(file.fail()){
+      throw std::runtime_error("il file non è stato trovato o  non è possibile aprirlo");
+    }
+    std::string row;
+    std::getline(file, row, '\n');
+    int mode{std::stoi(row)};
     if (mode == 1) {
       sir::SIR state{0, 0, 0};
 
@@ -98,19 +101,17 @@ int  sir::inputFile(std::string filename, sir::Epidemic& epidemic,
       state.I = std::stoi(row);
 
       std::getline(file, row, '\n');
-      state.R = std::stoi(row);  
+      state.R = std::stoi(row);
       epidemic.setFirstState(state);
-      
+
       std::getline(file, row, '\n');
       epidemic.setT(std::stoi(row));
-      
+
       std::getline(file, row, '\n');
       epidemic.setBeta(std::stod(row));
-     
+
       std::getline(file, row, '\n');
       epidemic.setGamma(std::stod(row));
-      
-      
 
     } else if (mode == 2) {
       std::getline(file, row, '\n');
@@ -137,18 +138,18 @@ int  sir::inputFile(std::string filename, sir::Epidemic& epidemic,
   }
 }
 
-int sir::inputCommand(char* argv[], sir::Epidemic& epidemic,
-                       sir::Automaton& automaton) {
+int sir::inputCommand(int argc , char* argv[], sir::Epidemic& epidemic,
+                      sir::Automaton& automaton) {
   try {
-    if (!(std::strcmp(argv[2],  "-mode=1"))) {
+    if (!(std::strcmp(argv[2], "-mode=1") ) && argc == 9) {
       epidemic.setFirstState(
           sir::SIR{std::stoi(argv[3]), std::stoi(argv[4]), std::stoi(argv[5])});
       epidemic.setT(std::stoi(argv[6]));
       epidemic.setBeta(std::stod(argv[7]));
-      epidemic.setGamma( std::stod(argv[8]));
+      epidemic.setGamma(std::stod(argv[8]));
       return 1;
 
-    } else if (!(std::strcmp(argv[2],  "-mode=2"))) {
+    } else if (!(std::strcmp(argv[2], "-mode=2"))  && argc == 8) {
       automaton.setN(std::stoi(argv[3]));
       automaton.setT(std::stoi(argv[4]));
       automaton.setSeed(std::stod(argv[5]));
@@ -158,29 +159,26 @@ int sir::inputCommand(char* argv[], sir::Epidemic& epidemic,
       return 2;
 
     } else {
-      throw std::invalid_argument("modalità di simulazione sconosciuta");
+      throw std::invalid_argument("modalità di simulazione sconosciuta o numero di dati per l'iniziallizzazione errato");
     }
-  } catch(const std::invalid_argument& e){
+  } catch (const std::invalid_argument& e) {
     throw e;
   }
-
- 
 }
 
 int sir::input(int argc, char* argv[], sir::Epidemic& epidemic,
-                sir::Automaton& automaton) {
- 
+               sir::Automaton& automaton) {
   try {
     if (argc == 1) {
       return sir::inputCin(epidemic, automaton);
-    } else if (std::string(argv[1]) == "-f") {
+    } else if (std::string(argv[1]) == "-f" && argc == 3) {
       return sir::inputFile(argv[2], epidemic, automaton);
     } else if (std::string(argv[1]) == "-c") {
-      return sir::inputCommand(argv, epidemic, automaton);
+      return sir::inputCommand( argc, argv, epidemic, automaton);
     } else {
       throw std::runtime_error("inizializzazione errata");
     }
-    
+
   } catch (const std::invalid_argument& e) {
     throw e;
   }
