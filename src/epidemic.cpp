@@ -65,7 +65,7 @@ double sir::Epidemic::getGamma() const { return gamma_; }
 
 void sir::Epidemic::evolve() {
   for (int i = 0; i < T_; i++) {
-    sir::SIR newSIR{0, 0, 0};
+    sir::SIR newSIR(0, 0, 0);
     newSIR.S = sir::updateS(state_[i], beta_, N_);
     newSIR.I = sir::updateI(state_[i], beta_, gamma_, N_);
     newSIR.R = sir::updateR(newSIR.S, newSIR.I, N_);

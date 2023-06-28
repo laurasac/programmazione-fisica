@@ -7,7 +7,7 @@ int sir::inputCin(sir::Epidemic& epidemic, sir::Automaton& automaton) {
   int mode;
   std::cout << "Simulatore di una epidemia. Si "
                "richiede di scegliere la modalità di evoluzione: \n1 Modello "
-               "SIR\n2 automaton Cellulare"
+               "SIR\n2 Automa Cellulare"
             << "\n";
   std::cin >> mode;
   try {

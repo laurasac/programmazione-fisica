@@ -4,7 +4,7 @@
 #include "src/epidemic.hpp"
 #include "src/io.hpp"
 #include "src/automaton.hpp"
-
+#include <vector>
 
 TEST_CASE("test della struct Sir e delle sue funzioni"){
 
@@ -21,8 +21,19 @@ TEST_CASE("test della epidemia"){
 TEST_CASE("test dell'ouput"){
     
 }
-TEST_CASE("test dell'automaton"){
-    
+TEST_CASE("test dell'automa"){
+    SUBCASE("test changeStatePerson"){
+        sir::Automaton automaton(9,10,0.3, 0.4, 1);
+        auto map = automaton.getMap();
+        CHECK(automaton.changeStatePerson(4) == 's');
+        CHECK(automaton.changeStatePerson(2) == 'r');
+    }
+    SUBCASE("test evolve"){
+        sir::Automaton automaton(9,10,0.3, 0.4, 1);
+        automaton.evolve();
+        auto map = automaton.getMap();
+        CHECK(map[1] == 'i');
+        CHECK(map[3] == 's');
+        CHECK(map[4] == 'i');
+    }
 }
-
-// TODO Rifai test

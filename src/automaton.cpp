@@ -23,38 +23,6 @@ sir::Automaton::Automaton(int N, int T, double beta, double gamma, double seed) 
     size_ += 1;
   }
   this->setMap();
-  // TODO va bene farlo così?
-  /*int person;
-  int count{0};
-  int count_i{0};
-  std::uniform_int_distribution<> roll_people(1, 3);
-
-  while (count < N_) {
-    person = roll_people(eng_);
-    switch (person) {
-      case 1:
-        map_.push_back('s');
-        state_.S+=1;
-        count++;
-        break;
-      case 2:
-        map_.push_back('i');
-        count++;
-        count_i++;
-        state_.I+=1;
-        break;
-      case 3:
-        map_.push_back('r');
-        count++;
-        state_.R +=1;
-        break;
-    }
-  }
-
-  if (count_i == 0) {
-    person = roll_people(eng_);
-    map_[(person * N_ / 3) - 1] = 'i';
-  }*/
 }
 sir::Automaton::Automaton() {
   N_ = 0;
@@ -146,7 +114,7 @@ sir::SIR sir::Automaton::getState() const{ return state_;}
 char sir::Automaton::changeStatePerson(int index) {
   int count_i{0};
   std::uniform_real_distribution<> roll_probability(
-      1., 3.5);  // TODO vediamo se rendere opzionali tali fattori
+      1., 3.5);  
 
   if (index % size_ != 0 && map_[index - 1] == 'i') {
     count_i += 1;
@@ -164,11 +132,10 @@ char sir::Automaton::changeStatePerson(int index) {
 
   double prob;
 
-  if (map_[index] == 's' && count_i != 0) {
+  if (map_[index] == 's') {
     auto x = roll_probability(eng_);
-    // std::cout << x << "\n";
     prob = count_i * beta_ * x;
-    if (prob > 0.2) {
+    if (prob > 0.7) {
       state_.I+=1;
       return 'i';
     } else {
@@ -176,11 +143,9 @@ char sir::Automaton::changeStatePerson(int index) {
       return 's';
     }
   } else {
-    // TODO vediamo cosa fare per le i
     auto x = roll_probability(eng_);
-    // std::cout << x << "\n";
     prob = gamma_ * x;
-    if (prob > 0.2) {
+    if (prob > 0.6) {
       state_.R+=1;
       return 'r';
     } else {
@@ -190,17 +155,7 @@ char sir::Automaton::changeStatePerson(int index) {
     }
   }
 }
-/*
-void sir::automaton::printMap() {
-  for (unsigned long i = 0; i < map_.size(); i++) {
-    if (i % size_ == 0) {
-      std::cout << "\n[" << map_[i] << "]";
-    } else {
-      std::cout << "[" << map_[i] << "]";
-    }
-  }
-  std::cout << "\n";
-}*/
+
 void sir::Automaton::evolve() {
   std::vector<char> mapChange(map_);
   char change;
