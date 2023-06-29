@@ -20,7 +20,7 @@ class Automaton {
     Automaton(int N, int T, double beta, double gamma, double seed);
     Automaton();
     
-    char changeStatePerson(int index);
+    char changeStatePerson(int index, std::vector<char>& map);
     //void printMap();
     void evolve();
     

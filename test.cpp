@@ -25,8 +25,8 @@ TEST_CASE("test dell'automa"){
     SUBCASE("test changeStatePerson"){
         sir::Automaton automaton(9,10,0.3, 0.4, 1);
         auto map = automaton.getMap();
-        CHECK(automaton.changeStatePerson(4) == 's');
-        CHECK(automaton.changeStatePerson(2) == 'r');
+        CHECK(automaton.changeStatePerson(4, map) == 's');
+        CHECK(automaton.changeStatePerson(2, map) == 'r');
     }
     SUBCASE("test evolve"){
         sir::Automaton automaton(9,10,0.3, 0.4, 1);

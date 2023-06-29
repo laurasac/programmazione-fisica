@@ -20,11 +20,11 @@ sir::Epidemic::Epidemic(sir::SIR firstState, double beta, double gamma, int T) {
   N_ = firstState.S + firstState.I + firstState.R;
 }
 sir::Epidemic::Epidemic() {
-  state_.push_back(sir::SIR{0, 0, 0});
+  state_.push_back(sir::SIR{1, 0, 0});
   beta_ = 0.;
   gamma_ = 0.;
-  T_ = 0;
-  N_ = 0;
+  T_ = 1;
+  N_ = 1;
 }
 
 void sir::Epidemic::setFirstState(sir::SIR firstState) {
