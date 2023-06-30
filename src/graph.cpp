@@ -30,6 +30,7 @@ void sir::createChart(sf::RenderWindow& window, const int width,
   axisY.setPosition(margin, margin);
 
   sf::Text labelX;
+  sf::Text labelY;
   labelX.setFont(font);
   labelX.setString("T");
   labelX.setCharacterSize(15);
@@ -37,10 +38,18 @@ void sir::createChart(sf::RenderWindow& window, const int width,
   labelX.setStyle(sf::Text::Bold);
   labelX.setPosition(width - margin - 10, height - margin - 20);
 
+  
+  labelY.setFont(font);
+  labelY.setString("Individui");
+  labelY.setCharacterSize(15);
+  labelY.setFillColor(sf::Color::Black);
+  labelY.setStyle(sf::Text::Bold);
+  labelY.setPosition(margin + 5, margin);
+
   window.draw(axisX);
   window.draw(axisY);
   window.draw(labelX);
-  //TODO vedi se creare labely
+  window.draw(labelY);
 
   int scaleT{sir::controlProportions(T)};
   int scaleN{sir::controlProportions(N)};
@@ -179,8 +188,8 @@ void sir::printMap(sf::RenderWindow& window, std::vector<char> map,
   int countY{0};
 
   for (unsigned long i = 0; i < map.size(); i++) {
-    cells[i].setSize(
-        sf::Vector2f((width - 2 * margin) / size, (height - 2 * margin) / size));
+    cells[i].setSize(sf::Vector2f((width - 2 * margin) / size,
+                                  (height - 2 * margin) / size));
     cells[i].setOutlineColor(sf::Color::Black);
     cells[i].setOutlineThickness(2.);
 
@@ -193,14 +202,14 @@ void sir::printMap(sf::RenderWindow& window, std::vector<char> map,
       countY += 1;
       countX = 0;
       cells[i].setPosition(margin + countX * (width - 2 * margin) / size,
-                          margin + countY * (height - 2 * margin) / size);
+                           margin + countY * (height - 2 * margin) / size);
       people[i].setPosition(margin + 10 + countX * (width - 2 * margin) / size,
                             margin + countY * (height - 2 * margin) / size);
 
       countX += 1;
     } else {
       cells[i].setPosition(margin + countX * (width - 2 * margin) / size,
-                          margin + countY * (height - 2 * margin) / size);
+                           margin + countY * (height - 2 * margin) / size);
       people[i].setPosition(margin + 10 + countX * (width - 2 * margin) / size,
                             margin + countY * (height - 2 * margin) / size);
       countX += 1;
@@ -290,13 +299,20 @@ void sir::renderWindow(const int width, const int height, const int margin,
       if (event.type == sf::Event::Closed) {
         window.close();
       } else if (event.type == sf::Event::KeyPressed &&
-                 event.key.code == sf::Keyboard::Key::Enter && count <= t) {
-        window.clear(sf::Color::White);
-        printMap(window, automaton.getMap(), automaton.getState(), automaton.getSize(),
-                 width, height - 200, margin, font);
-        window.display();
-        count += 1;
-        automaton.evolve();
+                 event.key.code == sf::Keyboard::Key::Enter) {
+        if (count <= t) {
+          window.clear(sf::Color::White);
+          printMap(window, automaton.getMap(), automaton.getState(),
+                   automaton.getSize(), width, height - 200, margin, font);
+          window.display();
+          count += 1;
+          automaton.evolve();
+        } else {
+          label.setString("Simulazione terminata, e' possibile chiudere la finestra");
+          window.clear(sf::Color::White);
+          window.draw(label);
+          window.display();
+        }
       }
     }
   }
