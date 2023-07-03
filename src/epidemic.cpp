@@ -1,8 +1,8 @@
 #include "epidemic.hpp"
+
 #include <stdexcept>
 
 sir::Epidemic::Epidemic(sir::SIR firstState, double beta, double gamma, int T) {
-  
   if (!(gamma >= 0 && gamma <= 1) || !(beta >= 0 && beta <= 1)) {
     throw std::invalid_argument(
         "gamma e beta invalidi, devo essere compresi tra 0 e 1");
@@ -44,7 +44,7 @@ void sir::Epidemic::setBeta(double beta) {
   beta_ = beta;
 }
 void sir::Epidemic::setGamma(double gamma) {
-  if (!(gamma >= 0 && gamma <= 1) ) {
+  if (!(gamma >= 0 && gamma <= 1)) {
     throw std::invalid_argument(
         "gamma invalido, deve essere compreso tra 0 e 1");
   }
@@ -65,7 +65,7 @@ double sir::Epidemic::getGamma() const { return gamma_; }
 
 void sir::Epidemic::evolve() {
   for (int i = 0; i < T_; i++) {
-    sir::SIR newSIR(0, 0, 0);
+    sir::SIR newSIR{0, 0, 0};
     newSIR.S = sir::updateS(state_[i], beta_, N_);
     newSIR.I = sir::updateI(state_[i], beta_, gamma_, N_);
     newSIR.R = sir::updateR(newSIR.S, newSIR.I, N_);

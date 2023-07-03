@@ -5,7 +5,6 @@ struct SIR {
   int S;
   int I;
   int R;
-  SIR(int s, int i, int r);
 };
 
 int updateS(SIR& oldSir, double beta, int N);

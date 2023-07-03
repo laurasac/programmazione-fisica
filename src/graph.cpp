@@ -20,7 +20,7 @@ int sir::controlProportions(int a) {
 
 void sir::createChart(sf::RenderWindow& window, const int width,
                       const int height, const int margin, int T, int N,
-                      sf::Font font) {
+                      sf::Font& font) {
   sf::RectangleShape axisX(sf::Vector2f(width - margin * 2, 4.f));
   sf::RectangleShape axisY(sf::Vector2f(height - margin * 2, 3.f));
   axisY.rotate(90.f);
@@ -38,7 +38,6 @@ void sir::createChart(sf::RenderWindow& window, const int width,
   labelX.setStyle(sf::Text::Bold);
   labelX.setPosition(width - margin - 10, height - margin - 20);
 
-  
   labelY.setFont(font);
   labelY.setString("Individui");
   labelY.setCharacterSize(15);
@@ -112,7 +111,7 @@ void sir::createChart(sf::RenderWindow& window, const int width,
 void sir::createGraph(sf::RenderWindow& window, const int width,
                       const int height, const int margin,
                       std::vector<sir::SIR> state, int T, int N,
-                      sf::Font font) {
+                      sf::Font& font) {
   sf::Text labelS;
   sf::Text labelI;
   sf::Text labelR;
@@ -181,7 +180,7 @@ void sir::createGraph(sf::RenderWindow& window, const int width,
 
 void sir::printMap(sf::RenderWindow& window, std::vector<char> map,
                    sir::SIR state, int size, int width, int height, int margin,
-                   sf::Font font) {
+                   sf::Font& font) {
   sf::RectangleShape cells[map.size()];
   sf::Text people[map.size()];
   int countX{0};
@@ -308,7 +307,8 @@ void sir::renderWindow(const int width, const int height, const int margin,
           count += 1;
           automaton.evolve();
         } else {
-          label.setString("Simulazione terminata, e' possibile chiudere la finestra");
+          label.setString(
+              "Simulazione terminata, e' possibile chiudere la finestra");
           window.clear(sf::Color::White);
           window.draw(label);
           window.display();

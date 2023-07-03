@@ -2,12 +2,6 @@
 
 #include <cmath>
 
-sir::SIR::SIR(int s, int i, int r) {
-  S = s;
-  I = i;
-  R = r;
-}
-
 int sir::updateS(sir::SIR& oldSir, double beta, int N) {
   int newS = std::round(oldSir.S * std::exp(-beta * oldSir.I / N));
   return newS;

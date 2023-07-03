@@ -74,7 +74,7 @@ void sir::Automaton::setN(int N) {
 }
 void sir::Automaton::setMap() {
   map_.clear();
-  state_ = sir::SIR(0, 0, 0);
+  state_ = sir::SIR{0, 0, 0};
   int person;
   int count{0};
   int count_i{0};
@@ -164,7 +164,7 @@ char sir::Automaton::changeStatePerson(int index, std::vector<char>& map) {
 void sir::Automaton::evolve() {
   std::vector<char> oldMap(map_);
   char change;
-  state_ = sir::SIR(0, 0, 0);
+  state_ = sir::SIR{0, 0, 0};
   for (int count = 0; count < N_; count++) {
     if (oldMap[count] != 'r') {
       change = changeStatePerson(count, oldMap);
