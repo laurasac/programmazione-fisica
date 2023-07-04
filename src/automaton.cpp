@@ -163,12 +163,10 @@ char sir::Automaton::changeStatePerson(int index, std::vector<char>& map) {
 
 void sir::Automaton::evolve() {
   std::vector<char> oldMap(map_);
-  char change;
   state_ = sir::SIR{0, 0, 0};
   for (int count = 0; count < N_; count++) {
     if (oldMap[count] != 'r') {
-      change = changeStatePerson(count, oldMap);
-      map_[count] = change;
+      map_[count] = changeStatePerson(count, oldMap);
     } else {
       map_[count] = 'r';
       state_.R += 1;
