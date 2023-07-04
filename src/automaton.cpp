@@ -78,10 +78,10 @@ void sir::Automaton::setMap() {
   int person;
   int count{0};
   int count_i{0};
-  std::uniform_int_distribution<> roll_people(1, 3);
+  std::uniform_int_distribution<> rollPeople(1, 3);
 
   while (count < N_) {
-    person = roll_people(eng_);
+    person = rollPeople(eng_);
     switch (person) {
       case 1:
         map_.push_back('s');
@@ -103,7 +103,7 @@ void sir::Automaton::setMap() {
   }
 
   if (count_i == 0 && N_ >= 3) {
-    person = roll_people(eng_);
+    person = rollPeople(eng_);
     map_[(person * N_ / 3) - 1] = 'i';
   } else if (count_i == 0 && N_ < 3) {
     map_[0] = 'i';
@@ -120,27 +120,27 @@ int sir::Automaton::getSize() const { return size_; }
 sir::SIR sir::Automaton::getState() const { return state_; }
 
 char sir::Automaton::changeStatePerson(int index, std::vector<char>& map) {
-  int count_i{0};
-  std::uniform_real_distribution<> roll_probability(1., 3.5);
+  int countI{0};
+  std::uniform_real_distribution<> rollProbability(1., 3.5);
 
   if (index % size_ != 0 && map[index - 1] == 'i') {
-    count_i += 1;
+    countI += 1;
   }
   if (index + 1 < N_ && (index + 1) % size_ != 0 && map[index + 1] == 'i') {
-    count_i += 1;
+    countI += 1;
   }
   if (index + size_ < N_ && map[index + size_] == 'i') {
-    count_i += 1;
+    countI += 1;
   }
   if (index - size_ > 0 && map[index - size_] == 'i') {
-    count_i += 1;
+    countI += 1;
   }
 
   double prob;
 
   if (map[index] == 's') {
-    auto x = roll_probability(eng_);
-    prob = count_i * beta_ * x;
+    auto x = rollProbability(eng_);
+    prob = countI * beta_ * x;
     if (prob > 0.7) {
       state_.I += 1;
       return 'i';
@@ -149,7 +149,7 @@ char sir::Automaton::changeStatePerson(int index, std::vector<char>& map) {
       return 's';
     }
   } else {
-    auto x = roll_probability(eng_);
+    auto x = rollProbability(eng_);
     prob = gamma_ * x;
     if (prob > 0.6) {
       state_.R += 1;
