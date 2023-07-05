@@ -1,3 +1,4 @@
+#include <iostream>
 #include <stdexcept>
 
 #include "src/automaton.hpp"
@@ -20,8 +21,8 @@ int main(int argc, char* argv[]) {
     }
 
   } catch (const std::invalid_argument& e) {
-    throw e;
+    std::cout << "Errore: " << e.what();
   } catch (const std::runtime_error& e) {
-    throw e;
+    std::cout << "Errore: " << e.what();
   }
 }

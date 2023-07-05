@@ -8,11 +8,12 @@ sir::Automaton::Automaton(int N, int T, double beta, double gamma,
   if (!(gamma >= 0 && gamma <= 1) || !(beta >= 0 && beta <= 1)) {
     throw std::invalid_argument(
         "gamma e beta invalidi, devo essere compresi tra 0 e 1");
-  } else if (T <= 0) {
-    throw std::invalid_argument("il numero di giorni è un numero naturale");
-  } else if (N <= 0) {
+  } else if (T <= 0 || T > 1000) {
     throw std::invalid_argument(
-        "il numero di persone è un numero naturale o è troppo piccolo");
+        "il numero di giorni è troppo piccolo o troppo grande");
+  } else if (N <= 0 || N > 1000) {
+    throw std::invalid_argument(
+        "il numero di persone è troppo piccolo o troppo grande");
   }
 
   N_ = N;
@@ -56,15 +57,16 @@ void sir::Automaton::setGamma(double gamma) {
 }
 
 void sir::Automaton::setT(int T) {
-  if (T <= 0) {
-    throw std::invalid_argument("il numero di giorni è un numero naturale");
+  if (T <= 0 || T > 1000) {
+    throw std::invalid_argument(
+        "il numero di giorni è troppo piccolo o troppo grande");
   }
   T_ = T;
 }
 void sir::Automaton::setN(int N) {
-  if (N <= 0) {
+  if (N <= 0 || N > 1000) {
     throw std::invalid_argument(
-        "il numero di persone è un numero naturale o è troppo piccolo");
+        "il numero di persone è troppo piccolo o troppo grande");
   }
   N_ = N;
   size_ = std::round(std::sqrt(N_));
@@ -120,27 +122,26 @@ int sir::Automaton::getSize() const { return size_; }
 sir::SIR sir::Automaton::getState() const { return state_; }
 
 char sir::Automaton::changeStatePerson(int index, std::vector<char>& map) {
-  int countI{0};
   std::uniform_real_distribution<> rollProbability(1., 3.5);
-
-  if (index % size_ != 0 && map[index - 1] == 'i') {
-    countI += 1;
-  }
-  if (index + 1 < N_ && (index + 1) % size_ != 0 && map[index + 1] == 'i') {
-    countI += 1;
-  }
-  if (index + size_ < N_ && map[index + size_] == 'i') {
-    countI += 1;
-  }
-  if (index - size_ > 0 && map[index - size_] == 'i') {
-    countI += 1;
-  }
-
   double prob;
 
   if (map[index] == 's') {
-    auto x = rollProbability(eng_);
-    prob = countI * beta_ * x;
+    int countI{0};
+    if (index % size_ != 0 && map[index - 1] == 'i') {
+      countI += 1;
+    }
+    if (index + 1 < N_ && (index + 1) % size_ != 0 && map[index + 1] == 'i') {
+      countI += 1;
+    }
+    if (index + size_ < N_ && map[index + size_] == 'i') {
+      countI += 1;
+    }
+    if (index - size_ > 0 && map[index - size_] == 'i') {
+      countI += 1;
+    }
+
+    prob = countI * beta_ * rollProbability(eng_);
+
     if (prob > 0.7) {
       state_.I += 1;
       return 'i';
@@ -148,9 +149,8 @@ char sir::Automaton::changeStatePerson(int index, std::vector<char>& map) {
       state_.S += 1;
       return 's';
     }
-  } else {
-    auto x = rollProbability(eng_);
-    prob = gamma_ * x;
+  } else if (map[index] == 'i') {
+    prob = gamma_ * rollProbability(eng_);
     if (prob > 0.6) {
       state_.R += 1;
       return 'r';
@@ -158,6 +158,9 @@ char sir::Automaton::changeStatePerson(int index, std::vector<char>& map) {
       state_.I += 1;
       return 'i';
     }
+  } else {
+    state_.R += 1;
+    return 'r';
   }
 }
 
@@ -165,12 +168,7 @@ void sir::Automaton::evolve() {
   std::vector<char> oldMap(map_);
   state_ = sir::SIR{0, 0, 0};
   for (int count = 0; count < N_; count++) {
-    if (oldMap[count] != 'r') {
-      map_[count] = changeStatePerson(count, oldMap);
-    } else {
-      map_[count] = 'r';
-      state_.R += 1;
-    }
+    map_[count] = changeStatePerson(count, oldMap);
   }
   if ((state_.S + state_.I + state_.R) != N_) {
     throw std::runtime_error("errore nella simulazione dell'automaton");

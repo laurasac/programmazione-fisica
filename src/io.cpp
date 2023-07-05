@@ -94,47 +94,86 @@ int sir::inputFile(std::string filename, sir::Epidemic& epidemic,
     int mode{std::stoi(row)};
     if (mode == 1) {
       sir::SIR state{0, 0, 0};
-
+      if (file.eof()) {
+        throw std::invalid_argument("numero di dati troppo piccolo");
+      }
       std::getline(file, row, '\n');
       state.S = std::stoi(row);
 
+      if (file.eof()) {
+        throw std::invalid_argument("numero di dati troppo piccolo");
+      }
+
       std::getline(file, row, '\n');
       state.I = std::stoi(row);
+
+      if (file.eof()) {
+        throw std::invalid_argument("numero di dati troppo piccolo");
+      }
 
       std::getline(file, row, '\n');
       state.R = std::stoi(row);
       epidemic.setFirstState(state);
 
+      if (file.eof()) {
+        throw std::invalid_argument("numero di dati troppo piccolo");
+      }
+
       std::getline(file, row, '\n');
       epidemic.setT(std::stoi(row));
 
+      if (file.eof()) {
+        throw std::invalid_argument("numero di dati troppo piccolo");
+      }
+
       std::getline(file, row, '\n');
       epidemic.setBeta(std::stod(row));
+
+      if (file.eof()) {
+        throw std::invalid_argument("numero di dati troppo piccolo");
+      }
 
       std::getline(file, row, '\n');
       epidemic.setGamma(std::stod(row));
 
     } else if (mode == 2) {
+      if (file.eof()) {
+        throw std::invalid_argument("numero di dati troppo piccolo");
+      }
       std::getline(file, row, '\n');
       automaton.setN(std::stoi(row));
 
+      if (file.eof()) {
+        throw std::invalid_argument("numero di dati troppo piccolo");
+      }
       std::getline(file, row, '\n');
       automaton.setT(std::stoi(row));
 
+      if (file.eof()) {
+        throw std::invalid_argument("numero di dati troppo piccolo");
+      }
       std::getline(file, row, '\n');
       automaton.setSeed(std::stod(row));
 
+      if (file.eof()) {
+        throw std::invalid_argument("numero di dati troppo piccolo");
+      }
       std::getline(file, row, '\n');
       automaton.setBeta(std::stod(row));
 
+      if (file.eof()) {
+        throw std::invalid_argument("numero di dati troppo piccolo");
+      }
       std::getline(file, row, '\n');
       automaton.setGamma(std::stod(row));
       automaton.setMap();
     } else {
-      throw std::invalid_argument("modalità di simulazione sconosciuta");
+      throw std::runtime_error("modalità di simulazione sconosciuta");
     }
     return mode;
   } catch (const std::invalid_argument& e) {
+    throw e;
+  } catch (const std::runtime_error& e) {
     throw e;
   }
 }
@@ -160,11 +199,13 @@ int sir::inputCommand(int argc, char* argv[], sir::Epidemic& epidemic,
       return 2;
 
     } else {
-      throw std::invalid_argument(
+      throw std::runtime_error(
           "modalità di simulazione sconosciuta o numero di dati per "
           "l'iniziallizzazione errato");
     }
   } catch (const std::invalid_argument& e) {
+    throw e;
+  } catch (const std::runtime_error& e) {
     throw e;
   }
 }
@@ -183,6 +224,8 @@ int sir::input(int argc, char* argv[], sir::Epidemic& epidemic,
     }
 
   } catch (const std::invalid_argument& e) {
+    throw e;
+  } catch (const std::runtime_error& e) {
     throw e;
   }
 }
