@@ -27,9 +27,9 @@ target_include_directories(sir PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(sir PRIVATE sfml-graphics sfml-window) 
 
 if (BUILD_TESTING)
-  
+  ## vedi perchè non funzia più
   add_executable(test-sir test.cpp src/sir.cpp src/epidemic.cpp src/automaton.cpp src/io.cpp )
   target_include_directories(test-sir PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
-  add_test(NAME test_sir COMMAND test-sir)
+  add_test(NAME test-sir COMMAND test-sir WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 endif()

@@ -8,10 +8,13 @@ sir::Epidemic::Epidemic(sir::SIR firstState, double beta, double gamma, int T) {
         "gamma e beta invalidi, devo essere compresi tra 0 e 1");
   } else if (!sir::controlSIR(firstState)) {
     throw std::invalid_argument(
-        " i valori del sir devono essere numeri naturali o");
+        "i valori del sir devono essere numeri naturali");
   } else if (T <= 0 || T > 1000) {
     throw std::invalid_argument(
         "il numero di giorni troppo piccolo o troppo grande");
+  } else if (firstState.S + firstState.I + firstState.R > 1000) {
+    throw std::invalid_argument(
+        "il numero di persone per la simulazione è troppo alto");
   }
 
   state_.push_back(firstState);
@@ -31,7 +34,10 @@ sir::Epidemic::Epidemic() {
 void sir::Epidemic::setFirstState(sir::SIR firstState) {
   if (!sir::controlSIR(firstState)) {
     throw std::invalid_argument(
-        " i valori del sir devono essere numeri naturali");
+        "i valori del sir devono essere numeri naturali");
+  } else if (firstState.S + firstState.I + firstState.R > 1000) {
+    throw std::invalid_argument(
+        "il numero di persone per la simulazione è troppo alto");
   }
   state_.clear();
   state_.push_back(firstState);
@@ -53,7 +59,8 @@ void sir::Epidemic::setGamma(double gamma) {
 }
 void sir::Epidemic::setT(int T) {
   if (T <= 0 || T > 1000) {
-    throw std::invalid_argument("il numero di giorni è un numero naturale");
+    throw std::invalid_argument(
+        "il numero di giorni troppo piccolo o troppo grande");
   }
   T_ = T;
 }

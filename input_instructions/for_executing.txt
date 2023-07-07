@@ -1,8 +1,11 @@
 // comandi per costruire con cmake il main
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug          
 cmake --build build
-// comando per far partire il test con cmake
+// comando per far compilare il test
 cmake --build build --target test
+
+//comando per far partire il test
+./build/test-sir
 //comando generale
 
 g++ -std=c++17 -Wall -Wextra prova.cpp -o prova

@@ -43,7 +43,7 @@ void sir::createChart(sf::RenderWindow& window, const int width,
   labelY.setCharacterSize(15);
   labelY.setFillColor(sf::Color::Black);
   labelY.setStyle(sf::Text::Bold);
-  labelY.setPosition(margin + 5, margin-15);
+  labelY.setPosition(margin + 5, margin - 15);
 
   window.draw(axisX);
   window.draw(axisY);

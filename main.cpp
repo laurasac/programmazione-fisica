@@ -1,5 +1,7 @@
 #include <iostream>
 #include <stdexcept>
+#include <string>
+#include <vector>
 
 #include "src/automaton.hpp"
 #include "src/epidemic.hpp"
@@ -11,7 +13,8 @@ int main(int argc, char* argv[]) {
     int mode;
     sir::Epidemic epidemic;
     sir::Automaton automaton;
-    mode = sir::input(argc, argv, epidemic, automaton);
+    std::vector<std::string> commands(argv, argv + argc);
+    mode = sir::input(argc, commands, epidemic, automaton);
     if (mode == 1) {
       epidemic.evolve();
       sir::outputTable(epidemic);

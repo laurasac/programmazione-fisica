@@ -178,10 +178,10 @@ int sir::inputFile(std::string filename, sir::Epidemic& epidemic,
   }
 }
 
-int sir::inputCommand(int argc, char* argv[], sir::Epidemic& epidemic,
-                      sir::Automaton& automaton) {
+int sir::inputCommand(int argc, std::vector<std::string> argv,
+                      sir::Epidemic& epidemic, sir::Automaton& automaton) {
   try {
-    if (!(std::strcmp(argv[2], "-mode=1")) && argc == 9) {
+    if (argv[2] == "-mode=1" && argc == 9) {
       epidemic.setFirstState(
           sir::SIR{std::stoi(argv[3]), std::stoi(argv[4]), std::stoi(argv[5])});
       epidemic.setT(std::stoi(argv[6]));
@@ -189,7 +189,7 @@ int sir::inputCommand(int argc, char* argv[], sir::Epidemic& epidemic,
       epidemic.setGamma(std::stod(argv[8]));
       return 1;
 
-    } else if (!(std::strcmp(argv[2], "-mode=2")) && argc == 8) {
+    } else if (argv[2] == "-mode=2" && argc == 8) {
       automaton.setN(std::stoi(argv[3]));
       automaton.setT(std::stoi(argv[4]));
       automaton.setSeed(std::stod(argv[5]));
@@ -210,7 +210,7 @@ int sir::inputCommand(int argc, char* argv[], sir::Epidemic& epidemic,
   }
 }
 
-int sir::input(int argc, char* argv[], sir::Epidemic& epidemic,
+int sir::input(int argc, std::vector<std::string> argv, sir::Epidemic& epidemic,
                sir::Automaton& automaton) {
   try {
     if (argc == 1) {
